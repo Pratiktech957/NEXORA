@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+:root {
+    /* Background */
+    --color-bg: #fafafa;
+    --color-surface: #ffffff;
+
+    /* Text */
+    --color-text: #111111;
+    --color-text-secondary: #6b7280;
+    --color-text-muted: #9ca3af;
+
+    /* Border */
+    --color-border: #e5e7eb;
+
+    /* Brand */
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+
+    /* Status */
+    --color-success: #16a34a;
+    --color-danger: #dc2626;
+
+    /* Layout */
+    --container-width: 1200px;
+    --page-padding: 24px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button,
+a {
+    font: inherit;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+::selection {
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --page-padding: 16px;
+    }
+}
+
+/* ================================
+   NAVBAR
+================================ */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+
+    background: rgba(250, 250, 250, 0.9);
+    border-bottom: 1px solid var(--color-border);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.navbar-container {
+    width: min(100% - 48px, var(--container-width));
+
+    min-height: 72px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo */
+
+.navbar-logo {
+    color: var(--color-text);
+
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+
+    transition: color 0.2s ease;
+}
+
+.navbar-logo:hover {
+    color: var(--color-primary);
+}
+
+/* Navigation links */
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.navbar-links a {
+    position: relative;
+
+    color: var(--color-text-secondary);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.navbar-links a:hover {
+    color: var(--color-text);
+}
+
+/* Resume */
+
+.navbar-resume {
+    padding: 9px 16px;
+
+    color: #ffffff !important;
+    background: var(--color-primary);
+
+    border-radius: 8px;
+}
+
+.navbar-resume:hover {
+    background: var(--color-primary-hover);
+    transform: translateY(-1px);
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+    .navbar-container {
+        width: min(100% - 32px, var(--container-width));
+    }
+
+    .navbar-links {
+        display: none;
+    }
+}
