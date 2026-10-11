@@ -12,6 +12,7 @@ import About from "../features/about/About";
 import Contact from "../features/contact/contact";
 
 import FloatingHeroImage from "../components/animation/FloatingHeroImage";
+import Chatbot from "../../chatbot/chatbot";
 
 function Home() {
     return (
@@ -53,6 +54,8 @@ function Home() {
 
                 {/* Contact + JARVIS */}
                 <Contact />
+                <Chatbot />
+
             </main>
 
             <Footer />

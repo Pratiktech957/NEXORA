@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { useState } from "react";
 
-import Jarvis from "../jarvis/Jarvis";
+import Jarvis from "../jarvis/jarvis";
 
 function Contact() {
     const [form, setForm] = useState({
