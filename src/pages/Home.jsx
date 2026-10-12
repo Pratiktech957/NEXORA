@@ -7,7 +7,8 @@ import Projects from "../features/projects/Projects";
 import Experience from "../features/experience/Experience";
 import Hackathons from "../features/hackathons/Hackathons";
 import Certifications from "../features/certifications/Certifications";
-import Achievements from "../features/achievements/Achievements";
+
+
 import About from "../features/about/About";
 import Contact from "../features/contact/contact";
 
@@ -47,7 +48,6 @@ function Home() {
                 <Certifications />
 
                 {/* Achievements */}
-                <Achievements />
 
                 {/* About */}
                 <About />

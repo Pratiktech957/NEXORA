@@ -1,5 +1,8 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Download } from "lucide-react";
+
+// Served from /public/images/resume/resume.pdf (Vite serves /public from the site root).
+const RESUME_URL = "/images/resume/resume.pdf";
 
 const introduction =
     "I'm a Software Engineer and Full-Stack Developer focused on building modern web applications, AI-powered systems, and production-oriented backend infrastructure. I enjoy turning real-world problems into reliable, scalable, and user-friendly software.";
@@ -16,35 +19,53 @@ const interests = [
     "Backend Engineering",
 ];
 
+const focusAreas = [
+    "Full-Stack Development",
+    "AI Systems",
+    "Backend Engineering",
+];
+
+// Easing shared across the entrance sequence for a cohesive feel.
+const EASE_OUT_EXPO = [0.22, 1, 0.36, 1];
+
+// Stagger container for the whole left column.
 const containerVariants = {
     hidden: {},
     visible: {
         transition: {
-            staggerChildren: 0.12,
-            delayChildren: 0.15,
+            staggerChildren: 0.1,
+            delayChildren: 0.1,
         },
     },
 };
 
-const itemVariants = {
-    hidden: {
-        opacity: 0,
-        x: -35,
-        y: 8,
-    },
-
+// Fade-up used for supporting blocks (paragraph, interests, CTA, focus areas).
+const fadeUpVariants = {
+    hidden: { opacity: 0, y: 16 },
     visible: {
         opacity: 1,
-        x: 0,
         y: 0,
-        transition: {
-            duration: 0.65,
-            ease: [0.22, 1, 0.36, 1],
-        },
+        transition: { duration: 0.6, ease: EASE_OUT_EXPO },
+    },
+};
+
+// Masked reveal — content clips in from behind an invisible line.
+const maskRevealVariants = {
+    hidden: { y: "110%" },
+    visible: {
+        y: "0%",
+        transition: { duration: 0.9, ease: EASE_OUT_EXPO },
     },
 };
 
 function Hero() {
+    const shouldReduceMotion = useReducedMotion();
+
+    // When reduced motion is on, skip the entrance animations entirely and
+    // render everything in its final state.
+    const initial = shouldReduceMotion ? false : "hidden";
+    const animate = shouldReduceMotion ? false : "visible";
+
     return (
         <section
             id="home"
@@ -61,16 +82,10 @@ function Hero() {
 
             {/* Top-right soft blue glow */}
             <motion.div
-                initial={{
-                    opacity: 0,
-                    scale: 0.8,
-                }}
-                animate={{
-                    opacity: 1,
-                    scale: 1,
-                }}
+                initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{
-                    duration: 1.5,
+                    duration: shouldReduceMotion ? 0 : 1.4,
                     ease: "easeOut",
                 }}
                 className="
@@ -89,17 +104,11 @@ function Hero() {
 
             {/* Bottom-left soft blue glow */}
             <motion.div
-                initial={{
-                    opacity: 0,
-                    scale: 0.8,
-                }}
-                animate={{
-                    opacity: 1,
-                    scale: 1,
-                }}
+                initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{
-                    duration: 1.8,
-                    delay: 0.2,
+                    duration: shouldReduceMotion ? 0 : 1.6,
+                    delay: shouldReduceMotion ? 0 : 0.15,
                     ease: "easeOut",
                 }}
                 className="
@@ -150,8 +159,8 @@ function Hero() {
             >
                 <motion.div
                     variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
+                    initial={initial}
+                    animate={animate}
                     className="
             relative
             max-w-4xl
@@ -162,7 +171,7 @@ function Hero() {
               ================================================= */}
 
                     <motion.div
-                        variants={itemVariants}
+                        variants={fadeUpVariants}
                         className="
               mb-6
               flex
@@ -171,66 +180,47 @@ function Hero() {
             "
                     >
                         <motion.span
-                            initial={{
-                                width: 0,
-                                opacity: 0,
-                            }}
-                            animate={{
-                                width: 32,
-                                opacity: 1,
-                            }}
+                            initial={shouldReduceMotion ? false : { width: 0, opacity: 0 }}
+                            animate={{ width: 32, opacity: 1 }}
                             transition={{
-                                duration: 0.6,
-                                delay: 0.25,
-                                ease: [0.22, 1, 0.36, 1],
+                                duration: shouldReduceMotion ? 0 : 0.55,
+                                delay: shouldReduceMotion ? 0 : 0.2,
+                                ease: EASE_OUT_EXPO,
                             }}
                             className="h-px bg-blue-600"
                         />
 
-                        <motion.span
-                            initial={{
-                                opacity: 0,
-                                x: -10,
-                            }}
-                            animate={{
-                                opacity: 1,
-                                x: 0,
-                            }}
-                            transition={{
-                                duration: 0.5,
-                                delay: 0.35,
-                            }}
-                            className="
-                text-sm
-                font-medium
-                tracking-wide
-                text-blue-600
-              "
-                        >
-                            Software Engineer
-                        </motion.span>
+                        {/* Masked reveal for the role label */}
+                        <span className="inline-block overflow-hidden">
+                            <motion.span
+                                variants={{
+                                    hidden: { y: "110%" },
+                                    visible: {
+                                        y: "0%",
+                                        transition: {
+                                            duration: 0.65,
+                                            ease: EASE_OUT_EXPO,
+                                        },
+                                    },
+                                }}
+                                className="
+                  inline-block
+                  text-sm
+                  font-medium
+                  tracking-wide
+                  text-blue-600
+                "
+                            >
+                                Software Engineer
+                            </motion.span>
+                        </span>
                     </motion.div>
 
                     {/* =================================================
-              NAME
+              NAME — masked reveal
               ================================================= */}
 
-                    <motion.h1
-                        initial={{
-                            opacity: 0,
-                            x: -50,
-                            scale: 0.97,
-                        }}
-                        animate={{
-                            opacity: 1,
-                            x: 0,
-                            scale: 1,
-                        }}
-                        transition={{
-                            duration: 0.9,
-                            delay: 0.35,
-                            ease: [0.22, 1, 0.36, 1],
-                        }}
+                    <h1
                         className="
               max-w-4xl
               text-5xl
@@ -243,29 +233,24 @@ function Hero() {
               lg:text-[82px]
             "
                     >
-                        Pratik Mohanty
-                    </motion.h1>
+                        {/* The overflow-hidden wrapper clips the mask; the
+                            inner motion.span slides up from below. */}
+                        <span className="block overflow-hidden pb-[0.12em]">
+                            <motion.span
+                                variants={maskRevealVariants}
+                                className="block"
+                            >
+                                Pratik Mohanty
+                            </motion.span>
+                        </span>
+                    </h1>
 
                     {/* =================================================
               INTRODUCTION
               ================================================= */}
 
                     <motion.p
-                        initial={{
-                            opacity: 0,
-                            x: -30,
-                            y: 15,
-                        }}
-                        animate={{
-                            opacity: 1,
-                            x: 0,
-                            y: 0,
-                        }}
-                        transition={{
-                            duration: 0.8,
-                            delay: 0.7,
-                            ease: [0.22, 1, 0.36, 1],
-                        }}
+                        variants={fadeUpVariants}
                         className="
               mt-7
               max-w-3xl
@@ -280,23 +265,11 @@ function Hero() {
                     </motion.p>
 
                     {/* =================================================
-              INTERESTS
+              INTERESTS — gentle per-word stagger
               ================================================= */}
 
                     <motion.div
-                        initial={{
-                            opacity: 0,
-                            y: 15,
-                        }}
-                        animate={{
-                            opacity: 1,
-                            y: 0,
-                        }}
-                        transition={{
-                            duration: 0.7,
-                            delay: 0.95,
-                            ease: [0.22, 1, 0.36, 1],
-                        }}
+                        variants={fadeUpVariants}
                         className="mt-5 max-w-3xl"
                     >
                         <p
@@ -311,17 +284,20 @@ function Hero() {
                             {interests.map((interest, index) => (
                                 <span key={interest}>
                                     <motion.span
-                                        initial={{
-                                            opacity: 0,
-                                            y: 6,
-                                        }}
-                                        animate={{
-                                            opacity: 1,
-                                            y: 0,
-                                        }}
+                                        initial={
+                                            shouldReduceMotion
+                                                ? false
+                                                : { opacity: 0, y: 6 }
+                                        }
+                                        animate={{ opacity: 1, y: 0 }}
                                         transition={{
-                                            duration: 0.35,
-                                            delay: 1 + index * 0.05,
+                                            duration: shouldReduceMotion
+                                                ? 0
+                                                : 0.3,
+                                            delay: shouldReduceMotion
+                                                ? 0
+                                                : 0.35 + index * 0.04,
+                                            ease: EASE_OUT_EXPO,
                                         }}
                                         className="inline-block"
                                     >
@@ -342,21 +318,7 @@ function Hero() {
               ================================================= */}
 
                     <motion.div
-                        initial={{
-                            opacity: 0,
-                            x: -30,
-                            y: 15,
-                        }}
-                        animate={{
-                            opacity: 1,
-                            x: 0,
-                            y: 0,
-                        }}
-                        transition={{
-                            duration: 0.7,
-                            delay: 1.35,
-                            ease: [0.22, 1, 0.36, 1],
-                        }}
+                        variants={fadeUpVariants}
                         className="
               mt-9
               flex
@@ -364,110 +326,53 @@ function Hero() {
               gap-3
               sm:flex-row
             "
-                    >
-                        {/* View Projects */}
+                    >{/* View Projects — White */}
                         <motion.a
                             href="#projects"
-                            whileHover={{
-                                y: -3,
-                                scale: 1.02,
-                            }}
-                            whileTap={{
-                                scale: 0.97,
-                            }}
-                            transition={{
-                                duration: 0.2,
-                            }}
-                            className="
-                group
-                inline-flex
-                items-center
-                justify-center
-                gap-2
-                rounded-lg
-                bg-[#111111]
-                px-5
-                py-3
-                text-sm
-                font-medium
-                text-white
-                shadow-[0_2px_0_#000000]
-                transition-colors
-                duration-200
-                hover:bg-blue-600
-              "
+                            whileHover={shouldReduceMotion ? undefined : { y: -2 }}
+                            whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+                            transition={{ duration: 0.2 }}
+                            className="group inline-flex items-center justify-center gap-2 rounded-lg
+    border border-gray-200 bg-white px-5 py-3 text-sm font-medium
+    text-[#111111] shadow-sm
+    hover:border-gray-300 hover:bg-gray-50
+    focus-visible:outline-none focus-visible:ring-2
+    focus-visible:ring-black focus-visible:ring-offset-2"
                         >
                             <span>View Projects</span>
-
-                            <motion.span
-                                initial={{
-                                    x: 0,
-                                }}
-                                whileHover={{
-                                    x: 3,
-                                    y: -3,
-                                }}
-                                transition={{
-                                    duration: 0.2,
-                                }}
-                            >
-                                <ArrowUpRight size={16} />
-                            </motion.span>
+                            <ArrowUpRight
+                                size={16}
+                                aria-hidden="true"
+                                className="transition-transform duration-200 motion-reduce:transition-none
+      group-hover:translate-x-[3px] group-hover:-translate-y-[3px]"
+                            />
                         </motion.a>
 
-                        {/* View Resume */}
+                        {/* View Resume — White */}
                         <motion.a
-                            href="/resume.pdf"
+                            href="/images/resume/resume.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
-                            whileHover={{
-                                y: -3,
-                                scale: 1.02,
-                            }}
-                            whileTap={{
-                                scale: 0.97,
-                            }}
-                            transition={{
-                                duration: 0.2,
-                            }}
-                            className="
-                group
-                inline-flex
-                items-center
-                justify-center
-                gap-2
-                rounded-lg
-                border
-                border-gray-200
-                bg-white
-                px-5
-                py-3
-                text-sm
-                font-medium
-                text-[#111111]
-                shadow-sm
-                transition-all
-                duration-200
-                hover:border-gray-300
-                hover:bg-gray-50
-              "
+                            whileHover={shouldReduceMotion ? undefined : { y: -2 }}
+                            whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+                            transition={{ duration: 0.2 }}
+                            className="group inline-flex items-center justify-center gap-2 rounded-lg
+    border border-gray-200 bg-white px-5 py-3 text-sm font-medium
+    text-[#111111] shadow-sm
+    hover:border-gray-300 hover:bg-gray-50
+    focus-visible:outline-none focus-visible:ring-2
+    focus-visible:ring-black focus-visible:ring-offset-2"
                         >
                             <span>View Resume</span>
-
-                            <motion.span
-                                initial={{
-                                    y: 0,
-                                }}
-                                whileHover={{
-                                    y: 2,
-                                }}
-                                transition={{
-                                    duration: 0.2,
-                                }}
-                            >
-                                <Download size={16} />
-                            </motion.span>
+                            <Download
+                                size={16}
+                                aria-hidden="true"
+                                className="transition-transform duration-200 motion-reduce:transition-none
+      group-hover:translate-y-[2px]"
+                            />
                         </motion.a>
+
+
                     </motion.div>
 
                     {/* =================================================
@@ -475,18 +380,7 @@ function Hero() {
               ================================================= */}
 
                     <motion.div
-                        initial={{
-                            opacity: 0,
-                            y: 15,
-                        }}
-                        animate={{
-                            opacity: 1,
-                            y: 0,
-                        }}
-                        transition={{
-                            duration: 0.7,
-                            delay: 1.6,
-                        }}
+                        variants={fadeUpVariants}
                         className="
               mt-12
               flex
@@ -498,36 +392,28 @@ function Hero() {
               text-gray-400
             "
                     >
-                        <motion.span
-                            whileHover={{
-                                color: "#111111",
-                                y: -2,
-                            }}
-                        >
-                            Full-Stack Development
-                        </motion.span>
+                        {focusAreas.map((area, index) => (
+                            <span
+                                key={area}
+                                className="flex items-center gap-x-4"
+                            >
+                                <motion.span
+                                    whileHover={
+                                        shouldReduceMotion
+                                            ? undefined
+                                            : { color: "#111111", y: -2 }
+                                    }
+                                    transition={{ duration: 0.2 }}
+                                    className="inline-block"
+                                >
+                                    {area}
+                                </motion.span>
 
-                        <span className="h-1 w-1 rounded-full bg-gray-300" />
-
-                        <motion.span
-                            whileHover={{
-                                color: "#111111",
-                                y: -2,
-                            }}
-                        >
-                            AI Systems
-                        </motion.span>
-
-                        <span className="h-1 w-1 rounded-full bg-gray-300" />
-
-                        <motion.span
-                            whileHover={{
-                                color: "#111111",
-                                y: -2,
-                            }}
-                        >
-                            Backend Engineering
-                        </motion.span>
+                                {index < focusAreas.length - 1 && (
+                                    <span className="h-1 w-1 rounded-full bg-gray-300" />
+                                )}
+                            </span>
+                        ))}
                     </motion.div>
                 </motion.div>
             </div>
@@ -536,9 +422,9 @@ function Hero() {
           HERO → SKILLS TRANSITION SPACE
           =====================================================
 
-          This invisible space gives the floating image enough
-          vertical room to travel naturally into the Skills
-          section without creating another visible section.
+          Reserved vertical space for the FloatingHeroImage to travel
+          into the Skills section. Kept untouched so the existing
+          transition continues to work.
       ===================================================== */}
 
             <div

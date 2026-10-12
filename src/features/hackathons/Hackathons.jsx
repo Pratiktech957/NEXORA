@@ -2,449 +2,218 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
     ArrowLeft,
     ArrowRight,
+    ArrowUpRight,
+    ExternalLink,
     Trophy,
 } from "lucide-react";
 import { useState } from "react";
 
 import hackathons from "./hackathons.data";
 
+// Professional profile and certificate links
+const LINKEDIN_URL =
+    "https://www.linkedin.com/in/pratik-mohanty-tech/?isSelfProfile=true";
+
+const GOOGLE_DRIVE_URL = "https://drive.google.com/drive/folders/1dV-KEMJOTtEIWgd2olZZtakX3ew6SGZA?usp=drive_link";
+
 function Hackathons() {
     const [activeIndex, setActiveIndex] = useState(0);
+
+    if (!hackathons.length) return null;
 
     const activeHackathon = hackathons[activeIndex];
 
     const previousHackathon = () => {
         setActiveIndex((current) =>
-            current === 0
-                ? hackathons.length - 1
-                : current - 1
+            current === 0 ? hackathons.length - 1 : current - 1
         );
     };
 
     const nextHackathon = () => {
         setActiveIndex((current) =>
-            current === hackathons.length - 1
-                ? 0
-                : current + 1
+            current === hackathons.length - 1 ? 0 : current + 1
         );
     };
-
-    if (!hackathons.length) {
-        return null;
-    }
 
     return (
         <section
             id="hackathons"
-            className="
-        relative
-        overflow-hidden
-        bg-[#111111]
-        px-5
-        py-24
-        text-white
-        md:px-6
-        md:py-32
-      "
+            className="relative overflow-hidden bg-[#111111] px-5 py-24 text-white md:px-6 md:py-32"
         >
-            {/* Background */}
-
+            {/* Background grid */}
             <div
                 aria-hidden="true"
-                className="
-          pointer-events-none
-          absolute
-          inset-0
-          opacity-[0.035]
-          [background-image:linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)]
-          [background-size:50px_50px]
-        "
+                className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)] [background-size:50px_50px]"
             />
 
+            {/* Ambient background glow */}
             <div
                 aria-hidden="true"
-                className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-[35%]
-          h-[500px]
-          w-[500px]
-          -translate-x-1/2
-          rounded-full
-          bg-blue-500/[0.07]
-          blur-[130px]
-        "
+                className="pointer-events-none absolute left-1/2 top-[35%] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-blue-500/[0.07] blur-[130px]"
             />
 
             <div className="relative mx-auto max-w-[1150px]">
-
-                {/* =========================================
-            HEADER
-        ========================================= */}
-
+                {/* Header */}
                 <motion.div
-                    initial={{
-                        opacity: 0,
-                        y: 25,
-                    }}
-                    whileInView={{
-                        opacity: 1,
-                        y: 0,
-                    }}
-                    viewport={{
-                        once: true,
-                        amount: 0.3,
-                    }}
-                    transition={{
-                        duration: 0.7,
-                    }}
-                    className="
-            mb-12
-            flex
-            flex-col
-            gap-6
-            md:flex-row
-            md:items-end
-            md:justify-between
-          "
+                    initial={{ opacity: 0, y: 25 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.7 }}
+                    className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
                 >
                     <div>
-                        <div
-                            className="
-                mb-5
-                flex
-                items-center
-                gap-3
-                text-[10px]
-                font-semibold
-                uppercase
-                tracking-[0.24em]
-                text-blue-400
-              "
-                        >
+                        <div className="mb-5 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-blue-400">
                             <Trophy size={13} />
-
                             Hackathon Archive
                         </div>
 
-                        <h2
-                            className="
-                text-4xl
-                font-semibold
-                tracking-[-0.05em]
-                sm:text-5xl
-                md:text-6xl
-              "
-                        >
+                        <h2 className="text-4xl font-semibold tracking-[-0.05em] sm:text-5xl md:text-6xl">
                             Built under
                             <br />
-
                             <span className="text-white/30">
                                 pressure.
                             </span>
                         </h2>
                     </div>
 
-                    <div
-                        className="
-              max-w-sm
-              text-sm
-              leading-6
-              text-white/40
-            "
-                    >
-                        A visual archive of competitions,
-                        challenges, collaborations, and
-                        moments where ideas had to become
-                        working solutions.
-                    </div>
+                    <p className="max-w-sm text-sm leading-6 text-white/40">
+                        A record of hackathons, innovation events,
+                        collaborations, and competitive problem-solving
+                        experiences.
+                    </p>
                 </motion.div>
 
-                {/* =========================================
-            MAIN ARCHIVE
-        ========================================= */}
-
+                {/* Archive panel */}
                 <motion.div
-                    initial={{
-                        opacity: 0,
-                        y: 35,
-                    }}
-                    whileInView={{
-                        opacity: 1,
-                        y: 0,
-                    }}
-                    viewport={{
-                        once: true,
-                        amount: 0.2,
-                    }}
-                    transition={{
-                        duration: 0.8,
-                    }}
-                    className="
-            relative
-            overflow-hidden
-            rounded-[28px]
-            border
-            border-white/10
-            bg-white/[0.025]
-          "
+                    initial={{ opacity: 0, y: 35 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.8 }}
+                    className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.025]"
                 >
-
-                    {/* =======================================
-              TOP BAR
-          ======================================= */}
-
-                    <div
-                        className="
-              flex
-              items-center
-              justify-between
-              border-b
-              border-white/10
-              px-5
-              py-4
-              md:px-7
-            "
-                    >
-                        <div
-                            className="
-                flex
-                items-center
-                gap-3
-                text-[9px]
-                font-semibold
-                uppercase
-                tracking-[0.2em]
-                text-white/30
-              "
-                        >
-                            <span
-                                className="
-                  h-1.5
-                  w-1.5
-                  rounded-full
-                  bg-blue-400
-                "
-                            />
-
-                            Archive / {String(
-                                activeIndex + 1
-                            ).padStart(2, "0")}
+                    {/* Top bar */}
+                    <div className="flex items-center justify-between border-b border-white/10 px-5 py-4 md:px-7">
+                        <div className="flex items-center gap-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/30">
+                            <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+                            Archive /{" "}
+                            {String(activeIndex + 1).padStart(2, "0")}
                         </div>
 
-                        <div
-                            className="
-                text-[9px]
-                font-medium
-                uppercase
-                tracking-[0.2em]
-                text-white/25
-              "
-                        >
-                            {String(hackathons.length).padStart(
-                                2,
-                                "0"
-                            )}{" "}
-                            entries
-                        </div>
+                        <span className="text-[9px] font-medium uppercase tracking-[0.2em] text-white/25">
+                            {String(hackathons.length).padStart(2, "0")} entries
+                        </span>
                     </div>
 
-                    {/* =======================================
-              MAIN IMAGE
-          ======================================= */}
+                    {/* Selected hackathon */}
+                    <div className="relative min-h-[440px] px-6 py-10 sm:px-10 sm:py-14 md:min-h-[440px] md:px-14">
+                        {/* Decorative number */}
+                        <div
+                            aria-hidden="true"
+                            className="pointer-events-none absolute right-5 top-5 select-none font-mono text-[100px] font-bold leading-none text-white/[0.025] sm:text-[160px]"
+                        >
+                            {activeHackathon.number}
+                        </div>
 
-                    <div
-                        className="
-              relative
-              h-[320px]
-              overflow-hidden
-              sm:h-[420px]
-              md:h-[560px]
-            "
-                    >
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeHackathon.id}
-                                initial={{
-                                    opacity: 0,
-                                    scale: 1.06,
-                                }}
-                                animate={{
-                                    opacity: 1,
-                                    scale: 1,
-                                }}
-                                exit={{
-                                    opacity: 0,
-                                    scale: 0.98,
-                                }}
-                                transition={{
-                                    duration: 0.55,
-                                    ease: [0.22, 1, 0.36, 1],
-                                }}
-                                className="
-                  absolute
-                  inset-0
-                "
+                                initial={{ opacity: 0, y: 14 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.3 }}
+                                className="relative z-10 flex min-h-[320px] flex-col"
                             >
-                                <img
-                                    src={
-                                        activeHackathon.image ||
-                                        "/images/hackathons/placeholder.svg"
-                                    }
-                                    alt={activeHackathon.title}
-                                    className="
-                    h-full
-                    w-full
-                    object-cover
-                  "
-                                />
-
-                                {/* Image gradient */}
-
-                                <div
-                                    className="
-                    absolute
-                    inset-0
-                    bg-gradient-to-t
-                    from-black
-                    via-black/20
-                    to-transparent
-                  "
-                                />
-                            </motion.div>
-                        </AnimatePresence>
-
-                        {/* =====================================
-                IMAGE INFORMATION
-            ===================================== */}
-
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={`${activeHackathon.id}-info`}
-                                initial={{
-                                    opacity: 0,
-                                    x: -25,
-                                }}
-                                animate={{
-                                    opacity: 1,
-                                    x: 0,
-                                }}
-                                exit={{
-                                    opacity: 0,
-                                    x: 25,
-                                }}
-                                transition={{
-                                    duration: 0.45,
-                                }}
-                                className="
-                  absolute
-                  bottom-7
-                  left-5
-                  right-5
-                  md:bottom-9
-                  md:left-8
-                "
-                            >
-                                <div
-                                    className="
-                    mb-3
-                    flex
-                    items-center
-                    gap-3
-                    text-[9px]
-                    font-semibold
-                    uppercase
-                    tracking-[0.2em]
-                    text-blue-400
-                  "
-                                >
-                                    {activeHackathon.organization}
-
-                                    <span className="h-px w-8 bg-blue-400/40" />
-
-                                    {activeHackathon.year}
+                                {/* Event type and year */}
+                                <div className="mb-5 flex flex-wrap items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-400">
+                                    <span>{activeHackathon.type}</span>
+                                    <span className="h-px w-7 bg-blue-400/40" />
+                                    <span>{activeHackathon.year}</span>
                                 </div>
 
-                                <h3
-                                    className="
-                    max-w-2xl
-                    text-2xl
-                    font-semibold
-                    tracking-[-0.035em]
-                    sm:text-3xl
-                    md:text-5xl
-                  "
-                                >
+                                {/* Event title */}
+                                <h3 className="max-w-2xl text-3xl font-semibold tracking-[-0.04em] sm:text-4xl md:text-5xl">
                                     {activeHackathon.title}
                                 </h3>
 
+                                {/* Achievement */}
                                 {activeHackathon.achievement && (
-                                    <div
-                                        className="
-                      mt-4
-                      inline-flex
-                      items-center
-                      gap-2
-                      rounded-full
-                      border
-                      border-white/20
-                      bg-black/30
-                      px-3
-                      py-1.5
-                      text-[10px]
-                      font-semibold
-                      text-white/80
-                      backdrop-blur-md
-                    "
-                                    >
+                                    <div className="mt-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-medium text-white/80">
                                         <Trophy
-                                            size={12}
+                                            size={13}
                                             className="text-blue-400"
                                         />
-
                                         {activeHackathon.achievement}
                                     </div>
                                 )}
+
+                                {/* Description */}
+                                <p className="mt-6 max-w-2xl text-sm leading-7 text-white/45">
+                                    {activeHackathon.description}
+                                </p>
+
+                                {/* Highlights, when provided */}
+                                {activeHackathon.highlights?.length > 0 && (
+                                    <ul className="mt-5 space-y-2">
+                                        {activeHackathon.highlights.map(
+                                            (highlight) => (
+                                                <li
+                                                    key={highlight}
+                                                    className="flex items-start gap-2 text-xs leading-5 text-white/45"
+                                                >
+                                                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-blue-400/70" />
+                                                    {highlight}
+                                                </li>
+                                            )
+                                        )}
+                                    </ul>
+                                )}
+
+                                {/* Skills and tags */}
+                                {activeHackathon.tags?.length > 0 && (
+                                    <div className="mt-6 flex flex-wrap gap-2">
+                                        {activeHackathon.tags.map((tag) => (
+                                            <span
+                                                key={tag}
+                                                className="rounded-md border border-white/10 px-2.5 py-1.5 text-[10px] text-white/45"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* LinkedIn and Google Drive links */}
+                                <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-3 pt-8">
+                                    <a
+                                        href={LINKEDIN_URL}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 text-xs font-medium text-white/70 transition-colors hover:text-blue-400"
+                                    >
+                                        LinkedIn & certificates
+                                        <ArrowUpRight size={15} />
+                                    </a>
+
+                                    <a
+                                        href={GOOGLE_DRIVE_URL}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 text-xs font-medium text-blue-300 transition-colors hover:text-blue-200"
+                                    >
+                                        View certificate folder
+                                        <ExternalLink size={14} />
+                                    </a>
+                                </div>
                             </motion.div>
                         </AnimatePresence>
 
-                        {/* =====================================
-                ARROWS
-            ===================================== */}
-
-                        <div
-                            className="
-                absolute
-                bottom-7
-                right-5
-                flex
-                gap-2
-                md:bottom-9
-                md:right-8
-              "
-                        >
+                        {/* Previous / next controls */}
+                        <div className="absolute bottom-6 right-6 z-20 flex gap-2 sm:bottom-8 sm:right-8">
                             <button
                                 type="button"
                                 onClick={previousHackathon}
                                 aria-label="Previous hackathon"
-                                className="
-                  flex
-                  h-10
-                  w-10
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  border-white/20
-                  bg-black/20
-                  text-white/70
-                  backdrop-blur-md
-                  transition-all
-                  hover:border-white/40
-                  hover:bg-white
-                  hover:text-black
-                "
+                                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-white/70 transition hover:bg-white hover:text-black"
                             >
                                 <ArrowLeft size={16} />
                             </button>
@@ -453,160 +222,81 @@ function Hackathons() {
                                 type="button"
                                 onClick={nextHackathon}
                                 aria-label="Next hackathon"
-                                className="
-                  flex
-                  h-10
-                  w-10
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  border-white/20
-                  bg-black/20
-                  text-white/70
-                  backdrop-blur-md
-                  transition-all
-                  hover:border-white/40
-                  hover:bg-white
-                  hover:text-black
-                "
+                                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-white/70 transition hover:bg-white hover:text-black"
                             >
                                 <ArrowRight size={16} />
                             </button>
                         </div>
                     </div>
 
-                    {/* =======================================
-              THUMBNAIL STRIP
-          ======================================= */}
+                    {/* Number-based event selector */}
+                    <div className="flex gap-2 overflow-x-auto border-t border-white/10 px-5 py-4 md:px-7">
+                        {hackathons.map((hackathon, index) => {
+                            const active = index === activeIndex;
 
-                    <div
-                        className="
-              overflow-x-auto
-              border-t
-              border-white/10
-              px-4
-              py-4
-              scrollbar-none
-              md:px-6
-            "
-                    >
-                        <div
-                            className="
-                flex
-                min-w-max
-                gap-3
-              "
-                        >
-                            {hackathons.map(
-                                (hackathon, index) => {
-                                    const active =
-                                        index === activeIndex;
+                            return (
+                                <button
+                                    key={hackathon.id}
+                                    type="button"
+                                    onClick={() => setActiveIndex(index)}
+                                    aria-label={`View ${hackathon.title}`}
+                                    aria-pressed={active}
+                                    className={`flex min-w-[115px] flex-1 flex-col items-start gap-2 rounded-lg border px-3 py-3 text-left transition ${active
+                                        ? "border-blue-400/60 bg-blue-400/[0.08]"
+                                        : "border-white/10 hover:border-white/25"
+                                        }`}
+                                >
+                                    <span
+                                        className={`font-mono text-[10px] ${active
+                                            ? "text-blue-400"
+                                            : "text-white/30"
+                                            }`}
+                                    >
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
 
-                                    return (
-                                        <button
-                                            key={hackathon.id}
-                                            type="button"
-                                            onClick={() =>
-                                                setActiveIndex(index)
-                                            }
-                                            className={`
-                        group
-                        relative
-                        h-[64px]
-                        w-[92px]
-                        shrink-0
-                        overflow-hidden
-                        rounded-lg
-                        border
-                        transition-all
-                        duration-300
-                        md:h-[72px]
-                        md:w-[105px]
-                        ${active
-                                                    ? "border-blue-400 opacity-100"
-                                                    : "border-white/10 opacity-40 hover:opacity-75"
-                                                }
-                      `}
-                                        >
-                                            <img
-                                                src={
-                                                    hackathon.image ||
-                                                    "/images/hackathons/placeholder.svg"
-                                                }
-                                                alt=""
-                                                className="
-                          h-full
-                          w-full
-                          object-cover
-                          transition-transform
-                          duration-300
-                          group-hover:scale-105
-                        "
-                                            />
-
-                                            <div
-                                                className={`
-                          absolute
-                          inset-0
-                          ${active
-                                                        ? "bg-blue-500/10"
-                                                        : "bg-black/30"
-                                                    }
-                        `}
-                                            />
-
-                                            <span
-                                                className="
-                          absolute
-                          bottom-1.5
-                          left-2
-                          text-[8px]
-                          font-semibold
-                          text-white
-                        "
-                                            >
-                                                {String(index + 1).padStart(
-                                                    2,
-                                                    "0"
-                                                )}
-                                            </span>
-                                        </button>
-                                    );
-                                }
-                            )}
-                        </div>
+                                    <span className="line-clamp-2 text-[10px] leading-4 text-white/65 sm:text-xs">
+                                        {hackathon.title}
+                                    </span>
+                                </button>
+                            );
+                        })}
                     </div>
                 </motion.div>
 
-                {/* =========================================
-            COUNTER
-        ========================================= */}
+                {/* Counter and verification links */}
+                <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center justify-between gap-6 text-[9px] uppercase tracking-[0.18em] text-white/25 sm:justify-start">
+                        <span>
+                            {String(activeIndex + 1).padStart(2, "0")}
+                            {" / "}
+                            {String(hackathons.length).padStart(2, "0")}
+                        </span>
 
-                <div
-                    className="
-            mt-6
-            flex
-            items-center
-            justify-between
-            text-[9px]
-            uppercase
-            tracking-[0.18em]
-            text-white/20
-          "
-                >
-                    <span>
-                        {String(activeIndex + 1).padStart(2, "0")}
-                        {" / "}
-                        {String(hackathons.length).padStart(
-                            2,
-                            "0"
-                        )}
-                    </span>
+                        <span>Select an entry</span>
+                    </div>
 
-                    <span>
-                        Select an entry
-                    </span>
+                    <div className="flex flex-wrap items-center gap-3">
+                        <a
+                            href={LINKEDIN_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-3 text-xs font-medium text-white/75 transition hover:border-blue-400/50 hover:text-blue-400"
+                        >
+                            LinkedIn Profile
+                            <ExternalLink size={14} />
+                        </a>
+
+                        <a
+                            href={GOOGLE_DRIVE_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 rounded-full border border-blue-400/40 bg-blue-400/[0.08] px-5 py-3 text-xs font-medium text-blue-300 transition hover:bg-blue-400/15"
+                        >
+                            View All Certificates
+                            <ArrowUpRight size={15} />
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>

@@ -2,598 +2,458 @@ import { motion } from "framer-motion";
 import {
     ArrowUpRight,
     ExternalLink,
-    Rotate3d,
 } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
-import { useState } from "react";
 
-const cardVariants = {
-    hidden: {
-        opacity: 0,
-        y: 50,
-        rotateX: 8,
-    },
+const easing = [0.22, 1, 0.36, 1];
 
-    visible: {
-        opacity: 1,
-        y: 0,
-        rotateX: 0,
-        transition: {
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-        },
-    },
-};
-
-function ProjectCard({ project, index }) {
-    const [isFlipped, setIsFlipped] = useState(false);
+function ProjectCard({
+    project,
+    index,
+    reduceMotion = false,
+}) {
+    const number = String(index + 1).padStart(2, "0");
 
     return (
-        <motion.div
-            variants={cardVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{
-                once: true,
-                amount: 0.2,
+        <motion.article
+            id={`project-${number}`}
+            aria-labelledby={`project-title-${project.id}`}
+            aria-roledescription="slide"
+            initial={{
+                opacity: 0,
+                x: reduceMotion ? 0 : 44,
+            }}
+            animate={{
+                opacity: 1,
+                x: 0,
+            }}
+            exit={{
+                opacity: 0,
+                x: reduceMotion ? 0 : -36,
+            }}
+            transition={{
+                duration: reduceMotion ? 0.01 : 0.42,
+                ease: easing,
             }}
             className="
-        group
-        [perspective:1400px]
-      "
+                grid
+                min-h-0
+                overflow-hidden
+                border
+                border-[#deded8]
+                bg-white
+                lg:min-h-[590px]
+                lg:grid-cols-[1.08fr_0.92fr]
+            "
         >
-            {/* =========================================
-          FLIP CONTAINER
-      ========================================= */}
+            {/* Large Project Image */}
 
-            <motion.div
-                animate={{
-                    rotateY: isFlipped ? 180 : 0,
-                }}
-                transition={{
-                    duration: 0.75,
-                    ease: [0.22, 1, 0.36, 1],
-                }}
-                whileHover={{
-                    scale: 1.015,
-                }}
+            <div
                 className="
-          relative
-          min-h-[540px]
-          w-full
-          cursor-pointer
-          [transform-style:preserve-3d]
-        "
-                onClick={() => setIsFlipped((prev) => !prev)}
+                    group
+                    relative
+                    min-h-[290px]
+                    overflow-hidden
+                    bg-[#e9e9e4]
+                    sm:min-h-[390px]
+                    lg:min-h-[590px]
+                "
             >
-                {/* =========================================
-            FRONT
-        ========================================= */}
+                <img
+                    src={project.image}
+                    alt={`${project.title} — ${project.subtitle}`}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                    className="
+                        absolute
+                        inset-0
+                        h-full
+                        w-full
+                        object-cover
+                        transition-transform
+                        duration-700
+                        ease-out
+                        group-hover:scale-[1.035]
+                        motion-reduce:transition-none
+                    "
+                />
+
+                {/* Image Overlay */}
+
+                <div
+                    aria-hidden="true"
+                    className="
+                        absolute
+                        inset-0
+                        bg-gradient-to-t
+                        from-black/55
+                        via-black/5
+                        to-black/10
+                    "
+                />
+
+                {/* Top Image Labels */}
 
                 <div
                     className="
-            absolute
-            inset-0
-            overflow-hidden
-            rounded-3xl
-            border
-            border-[#e5e7eb]
-            bg-white
-            shadow-[0_8px_35px_rgba(0,0,0,0.04)]
-            [backface-visibility:hidden]
-          "
+                        absolute
+                        left-5
+                        right-5
+                        top-5
+                        flex
+                        items-start
+                        justify-between
+                        sm:left-7
+                        sm:right-7
+                        sm:top-7
+                    "
                 >
-                    {/* -----------------------------------------
-              IMAGE
-          ----------------------------------------- */}
-
-                    <div
+                    <span
                         className="
-              relative
-              h-[330px]
-              overflow-hidden
-              bg-[#f3f4f6]
-            "
+                            border
+                            border-white/60
+                            bg-black/10
+                            px-3
+                            py-2
+                            text-[10px]
+                            font-semibold
+                            uppercase
+                            tracking-[0.2em]
+                            text-white
+                            backdrop-blur-sm
+                        "
                     >
-                        <motion.img
-                            src={project.image}
-                            alt={`${project.title} project preview`}
-                            loading={index === 0 ? "eager" : "lazy"}
-                            whileHover={{
-                                scale: 1.06,
-                            }}
-                            transition={{
-                                duration: 0.7,
-                            }}
-                            className="
-                h-full
-                w-full
-                object-cover
-              "
-                        />
+                        Selected Project / {number}
+                    </span>
 
-                        {/* Image overlay */}
-
-                        <div
-                            className="
-                absolute
-                inset-0
-                bg-gradient-to-t
-                from-black/30
-                via-transparent
-                to-transparent
-              "
-                        />
-
-                        {/* Number */}
-
-                        <div
-                            className="
-                absolute
-                left-5
-                top-5
-                flex
-                h-9
-                w-9
-                items-center
-                justify-center
-                rounded-full
-                border
-                border-white/40
-                bg-black/20
-                text-xs
-                font-semibold
-                text-white
-                backdrop-blur-md
-              "
-                        >
-                            {String(index + 1).padStart(2, "0")}
-                        </div>
-
-                        {/* Year */}
-
-                        <div
-                            className="
-                absolute
-                right-5
-                top-5
-                rounded-full
-                border
-                border-white/50
-                bg-white/85
-                px-3
-                py-1.5
-                text-[10px]
-                font-semibold
-                text-[#374151]
-                backdrop-blur-md
-              "
-                        >
-                            {project.year}
-                        </div>
-
-                        {/* Center icon */}
-
-                        <motion.div
-                            animate={{
-                                y: [0, -5, 0],
-                            }}
-                            transition={{
-                                duration: 3,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                            className="
-                absolute
-                bottom-5
-                right-5
-                flex
-                h-10
-                w-10
-                items-center
-                justify-center
-                rounded-full
-                border
-                border-white/40
-                bg-black/20
-                text-white
-                backdrop-blur-md
-              "
-                        >
-                            <Rotate3d size={17} />
-                        </motion.div>
-                    </div>
-
-                    {/* -----------------------------------------
-              FRONT CONTENT
-          ----------------------------------------- */}
-
-                    <div className="p-6 md:p-7">
-                        <div
-                            className="
-                mb-3
-                text-[10px]
-                font-semibold
-                uppercase
-                tracking-[0.2em]
-                text-[#2563eb]
-              "
-                        >
-                            {project.category}
-                        </div>
-
-                        <h3
-                            className="
-                text-2xl
-                font-semibold
-                tracking-[-0.035em]
-                text-[#111111]
-              "
-                        >
-                            {project.title}
-                        </h3>
-
-                        <p
-                            className="
-                mt-2
-                text-sm
-                font-medium
-                text-[#6b7280]
-              "
-                        >
-                            {project.subtitle}
-                        </p>
-
-                        <div className="mt-6 flex items-center justify-between">
-                            <span
-                                className="
-                  text-xs
-                  font-medium
-                  text-[#9ca3af]
-                "
-                            >
-                                Hover / click to explore
-                            </span>
-
-                            <motion.span
-                                animate={{
-                                    x: [0, 4, 0],
-                                }}
-                                transition={{
-                                    duration: 1.8,
-                                    repeat: Infinity,
-                                }}
-                                className="
-                  flex
-                  h-8
-                  w-8
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  border-[#e5e7eb]
-                  text-[#374151]
-                "
-                            >
-                                <ArrowUpRight size={15} />
-                            </motion.span>
-                        </div>
-                    </div>
+                    <span className="text-xs font-medium text-white/90">
+                        {project.year}
+                    </span>
                 </div>
 
-                {/* =========================================
-            BACK
-        ========================================= */}
+                {/* Bottom Image Typography */}
 
                 <div
                     className="
-            absolute
-            inset-0
-            overflow-hidden
-            rounded-3xl
-            border
-            border-[#dbe4ff]
-            bg-[#111111]
-            p-6
-            text-white
-            shadow-[0_20px_50px_rgba(0,0,0,0.12)]
-            [backface-visibility:hidden]
-            [transform:rotateY(180deg)]
-            md:p-7
-          "
+                        absolute
+                        bottom-6
+                        left-5
+                        right-5
+                        sm:bottom-8
+                        sm:left-7
+                        sm:right-7
+                    "
                 >
-                    {/* Background grid */}
-
-                    <div
-                        aria-hidden="true"
+                    <p
                         className="
-              pointer-events-none
-              absolute
-              inset-0
-              opacity-[0.05]
-              [background-image:linear-gradient(#fff_1px,transparent_1px),linear-gradient(90deg,#fff_1px,transparent_1px)]
-              [background-size:28px_28px]
-            "
-                    />
+                            mb-3
+                            text-[10px]
+                            font-semibold
+                            uppercase
+                            tracking-[0.22em]
+                            text-white/75
+                        "
+                    >
+                        {project.category}
+                    </p>
 
-                    <div className="relative flex h-full flex-col">
+                    <p
+                        className="
+                            max-w-2xl
+                            text-3xl
+                            font-semibold
+                            leading-[0.95]
+                            tracking-[-0.06em]
+                            text-white
+                            sm:text-4xl
+                            lg:text-5xl
+                        "
+                    >
+                        {project.title}
+                    </p>
+                </div>
+            </div>
 
-                        {/* Back header */}
+            {/* Project Information */}
 
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <div
-                                    className="
-                    text-[10px]
-                    font-semibold
-                    uppercase
-                    tracking-[0.2em]
-                    text-blue-400
-                  "
-                                >
-                                    {project.category}
-                                </div>
-
-                                <h3
-                                    className="
-                    mt-2
-                    text-xl
-                    font-semibold
-                    tracking-[-0.025em]
-                  "
-                                >
-                                    {project.title}
-                                </h3>
-                            </div>
-
-                            <button
-                                type="button"
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                    setIsFlipped(false);
-                                }}
-                                className="
-                  flex
-                  h-8
-                  w-8
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  border-white/15
-                  text-white/60
-                  transition-colors
-                  hover:border-white/30
-                  hover:text-white
+            <div
+                className="
+                    flex
+                    min-w-0
+                    flex-col
+                    p-5
+                    sm:p-8
+                    lg:p-10
+                    xl:p-12
                 "
-                                aria-label="Flip project card back"
-                            >
-                                <Rotate3d size={15} />
-                            </button>
-                        </div>
+            >
+                {/* Overview Header */}
 
-                        {/* Divider */}
+                <div
+                    className="
+                        flex
+                        items-center
+                        justify-between
+                        gap-4
+                        border-b
+                        border-[#e5e5df]
+                        pb-5
+                    "
+                >
+                    <span
+                        className="
+                            text-[10px]
+                            font-semibold
+                            uppercase
+                            tracking-[0.2em]
+                            text-[#777770]
+                        "
+                    >
+                        Project Overview
+                    </span>
 
-                        <div className="my-6 h-px bg-white/10" />
+                    <span
+                        className="
+                            text-[10px]
+                            font-semibold
+                            uppercase
+                            tracking-[0.15em]
+                            text-[#a0a098]
+                        "
+                    >
+                        {number} / 03
+                    </span>
+                </div>
 
-                        {/* Description */}
+                {/* Title */}
 
-                        <div>
-                            <p
-                                className="
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.18em]
-                  text-white/40
-                "
-                            >
-                                Overview
-                            </p>
+                <h3
+                    id={`project-title-${project.id}`}
+                    className="
+                        mt-6
+                        text-2xl
+                        font-semibold
+                        leading-tight
+                        tracking-[-0.045em]
+                        sm:mt-8
+                        sm:text-3xl
+                        xl:text-4xl
+                    "
+                >
+                    {project.subtitle}
+                </h3>
 
-                            <p
-                                className="
-                  mt-3
-                  text-sm
-                  leading-6
-                  text-white/70
-                "
-                            >
-                                {project.description}
-                            </p>
-                        </div>
+                {/* Description */}
 
-                        {/* Highlights */}
+                <p
+                    className="
+                        mt-4
+                        text-sm
+                        leading-7
+                        text-[#62625c]
+                        sm:text-base
+                        sm:leading-8
+                    "
+                >
+                    {project.description}
+                </p>
 
+                {/* Engineering Highlights */}
+
+                {Array.isArray(project.highlights) &&
+                    project.highlights.length > 0 && (
                         <div className="mt-6">
                             <p
                                 className="
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.18em]
-                  text-white/40
-                "
+                                    mb-3
+                                    text-[10px]
+                                    font-semibold
+                                    uppercase
+                                    tracking-[0.18em]
+                                    text-[#777770]
+                                "
                             >
-                                Key Engineering Work
+                                Engineering Highlights
                             </p>
 
-                            <div className="mt-3 space-y-2.5">
+                            <ul className="grid gap-x-4 gap-y-2 sm:grid-cols-2">
                                 {project.highlights
-                                    .slice(0, 3)
+                                    .slice(0, 4)
                                     .map((highlight) => (
-                                        <div
+                                        <li
                                             key={highlight}
                                             className="
-                        flex
-                        items-start
-                        gap-2.5
-                        text-xs
-                        leading-5
-                        text-white/65
-                      "
+                                                flex
+                                                items-start
+                                                gap-2
+                                                text-xs
+                                                leading-5
+                                                text-[#555550]
+                                                sm:text-sm
+                                            "
                                         >
                                             <span
+                                                aria-hidden="true"
                                                 className="
-                          mt-1.5
-                          h-1.5
-                          w-1.5
-                          shrink-0
-                          rounded-full
-                          bg-blue-400
-                        "
+                                                    mt-[7px]
+                                                    h-1
+                                                    w-1
+                                                    shrink-0
+                                                    rounded-full
+                                                    bg-[#151515]
+                                                "
                                             />
 
                                             {highlight}
-                                        </div>
+                                        </li>
                                     ))}
-                            </div>
+                            </ul>
                         </div>
+                    )}
 
-                        {/* Stack */}
+                {/* Technology Stack */}
 
+                {Array.isArray(project.technologies) &&
+                    project.technologies.length > 0 && (
                         <div className="mt-6">
                             <p
                                 className="
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.18em]
-                  text-white/40
-                "
+                                    mb-3
+                                    text-[10px]
+                                    font-semibold
+                                    uppercase
+                                    tracking-[0.18em]
+                                    text-[#777770]
+                                "
                             >
-                                Stack
+                                Technology Stack
                             </p>
 
-                            <div className="mt-3 flex flex-wrap gap-2">
-                                {project.technologies
-                                    .slice(0, 6)
-                                    .map((technology) => (
+                            <div className="flex flex-wrap gap-2">
+                                {project.technologies.map(
+                                    (technology) => (
                                         <span
                                             key={technology}
                                             className="
-                        rounded-full
-                        border
-                        border-white/10
-                        bg-white/[0.06]
-                        px-2.5
-                        py-1.5
-                        text-[10px]
-                        font-medium
-                        text-white/65
-                      "
+                                                border
+                                                border-[#deded8]
+                                                bg-[#fafaf8]
+                                                px-2.5
+                                                py-1.5
+                                                text-[10px]
+                                                font-medium
+                                                text-[#5f5f59]
+                                                sm:text-[11px]
+                                            "
                                         >
                                             {technology}
                                         </span>
-                                    ))}
+                                    )
+                                )}
                             </div>
                         </div>
+                    )}
 
-                        {/* Actions */}
+                {/* Project Links */}
 
-                        <div
+                <div
+                    className="
+                        mt-auto
+                        mt-7
+                        flex
+                        flex-wrap
+                        items-center
+                        gap-5
+                        border-t
+                        border-[#e5e5df]
+                        pt-6
+                    "
+                >
+                    {project.github && (
+                        <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`View ${project.title} on GitHub`}
                             className="
-                mt-auto
-                flex
-                flex-wrap
-                gap-3
-                border-t
-                border-white/10
-                pt-5
-              "
+                                inline-flex
+                                min-h-11
+                                items-center
+                                gap-2
+                                text-xs
+                                font-semibold
+                                uppercase
+                                tracking-[0.12em]
+                                transition-colors
+                                hover:text-[#777770]
+                                focus-visible:outline
+                                focus-visible:outline-2
+                                focus-visible:outline-offset-4
+                                focus-visible:outline-[#151515]
+                            "
                         >
-                            <a
-                                href={`/projects/${project.id}`}
-                                onClick={(event) =>
-                                    event.stopPropagation()
-                                }
-                                className="
-                  inline-flex
-                  items-center
-                  gap-2
-                  rounded-xl
-                  bg-white
-                  px-4
-                  py-2.5
-                  text-xs
-                  font-semibold
-                  text-[#111111]
-                  transition-colors
-                  hover:bg-blue-500
-                  hover:text-white
-                "
-                            >
-                                Case Study
+                            <FaGithub
+                                size={16}
+                                aria-hidden="true"
+                            />
 
-                                <ArrowUpRight size={14} />
-                            </a>
+                            GitHub
 
-                            {project.github && (
-                                <a
-                                    href={project.github}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onClick={(event) =>
-                                        event.stopPropagation()
-                                    }
-                                    className="
-                    inline-flex
-                    items-center
-                    gap-2
-                    rounded-xl
-                    border
-                    border-white/15
-                    px-4
-                    py-2.5
-                    text-xs
-                    font-semibold
-                    text-white/70
-                    transition-colors
-                    hover:border-white/30
-                    hover:text-white
-                  "
-                                >
-                                    <FaGithub size={14} />
+                            <ArrowUpRight
+                                size={14}
+                                aria-hidden="true"
+                            />
+                        </a>
+                    )}
 
-                                    GitHub
-                                </a>
-                            )}
+                    {project.live && (
+                        <a
+                            href={project.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Open live demo of ${project.title}`}
+                            className="
+                                inline-flex
+                                min-h-11
+                                items-center
+                                gap-2
+                                text-xs
+                                font-semibold
+                                uppercase
+                                tracking-[0.12em]
+                                transition-colors
+                                hover:text-[#777770]
+                                focus-visible:outline
+                                focus-visible:outline-2
+                                focus-visible:outline-offset-4
+                                focus-visible:outline-[#151515]
+                            "
+                        >
+                            <ExternalLink
+                                size={14}
+                                aria-hidden="true"
+                            />
 
-                            {project.live && (
-                                <a
-                                    href={project.live}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onClick={(event) =>
-                                        event.stopPropagation()
-                                    }
-                                    className="
-                    inline-flex
-                    items-center
-                    gap-2
-                    rounded-xl
-                    border
-                    border-white/15
-                    px-4
-                    py-2.5
-                    text-xs
-                    font-semibold
-                    text-white/70
-                    transition-colors
-                    hover:border-white/30
-                    hover:text-white
-                  "
-                                >
-                                    <ExternalLink size={14} />
+                            Live Demo
+                        </a>
+                    )}
 
-                                    Live
-                                </a>
-                            )}
-                        </div>
-                    </div>
+                    <span
+                        className="
+                            ml-auto
+                            text-[10px]
+                            font-semibold
+                            uppercase
+                            tracking-[0.15em]
+                            text-[#999991]
+                        "
+                    >
+                        {project.year}
+                    </span>
                 </div>
-            </motion.div>
-        </motion.div>
+            </div>
+        </motion.article>
     );
 }
 
