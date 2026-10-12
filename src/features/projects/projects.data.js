@@ -1,26 +1,19 @@
+
+const GITHUB_URL = "https://github.com/pratiktech957";
+
 const projects = [
     {
         id: "jan-ai-mitra",
-
         title: "JAN-AI-MITRA",
-
         subtitle: "AI Grievance Management System",
-
         category: "AI / Full-Stack",
 
         description:
             "An AI-powered grievance management platform designed to streamline complaint submission, contextual retrieval, classification, summarization, priority detection, and department routing.",
 
         technologies: [
-            "React",
-            "Node.js",
-            "Express.js",
-            "MongoDB",
-            "REST APIs",
-            "RAG",
-            "LLM",
-            "STT",
-            "TTS",
+            "React", "Node.js", "Express.js", "MongoDB",
+            "REST APIs", "RAG", "LLM", "STT", "TTS",
         ],
 
         highlights: [
@@ -32,14 +25,12 @@ const projects = [
             "Authentication and authorization",
         ],
 
-        image: "/images/projects/jan-ai-mitra/cover.webp",
+        image:
+            "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=85",
 
-        github: "https://github.com/pratiktech957",
-
-        live: "",
-
+        github: GITHUB_URL,
+        live: GITHUB_URL,
         featured: true,
-
         year: "2025",
 
         details: {
@@ -82,25 +73,16 @@ const projects = [
 
     {
         id: "cosmic-watch",
-
         title: "COSMIC-WATCH",
-
         subtitle: "Real-Time Near-Earth Object Monitoring Platform",
-
         category: "Real-Time / AI",
 
         description:
             "A real-time platform for monitoring near-Earth objects using NASA data, live updates, proximity alerts, visualization, and an AI/ML-based risk service.",
 
         technologies: [
-            "React",
-            "Node.js",
-            "Express.js",
-            "MongoDB",
-            "Socket.IO",
-            "NASA NeoWs API",
-            "Python",
-            "Flask",
+            "React", "Node.js", "Express.js", "MongoDB",
+            "Socket.IO", "NASA NeoWs API", "Python", "Flask",
         ],
 
         highlights: [
@@ -112,14 +94,12 @@ const projects = [
             "Python Flask AI/ML service",
         ],
 
-        image: "/images/projects/cosmic-watch/cover.webp",
+        image:
+            "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=85",
 
-        github: "https://github.com/pratiktech957",
-
-        live: "",
-
+        github: GITHUB_URL,
+        live: GITHUB_URL,
         featured: true,
-
         year: "2025",
 
         details: {
@@ -159,26 +139,16 @@ const projects = [
 
     {
         id: "secure-api-platform",
-
         title: "SECURE API PLATFORM",
-
         subtitle: "Backend, DevOps & Monitoring",
-
         category: "Backend / DevOps",
 
         description:
             "A production-oriented backend infrastructure project focused on secure APIs, containerization, reverse proxying, caching, CI/CD, logging, health checks, and observability.",
 
         technologies: [
-            "Node.js",
-            "Express.js",
-            "Docker",
-            "Nginx",
-            "Redis",
-            "CI/CD",
-            "Prometheus",
-            "Grafana",
-            "OWASP",
+            "Node.js", "Express.js", "Docker", "Nginx",
+            "Redis", "CI/CD", "Prometheus", "Grafana", "OWASP",
         ],
 
         highlights: [
@@ -192,14 +162,12 @@ const projects = [
             "CI/CD pipeline",
         ],
 
-        image: "/images/projects/secure-api-platform/cover.webp",
+        image:
+            "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=85",
 
-        github: "https://github.com/pratiktech957",
-
-        live: "",
-
+        github: GITHUB_URL,
+        live: GITHUB_URL,
         featured: true,
-
         year: "2026",
 
         details: {
